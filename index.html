@@ -13,34 +13,41 @@ box-sizing:border-box;
 font-family: Arial, sans-serif;
 }
 
-/* Background Image */
 body{
 height:100vh;
-width:100vw;
-overflow:hidden;
+display:flex;
+background-color:black;
 color:white;
-text-align:center;
-
-/* Adjusted image position */
-background-image: url('photo1.png');
-background-size: contain;
-background-position: center 8%;   /* moved image slightly up */
-background-repeat: no-repeat;
-background-color: black;
 }
 
-/* Dark Overlay Box */
-.overlay{
-position:absolute;
-top:70%;               /* moved box 20% down */
-left:50%;
-transform:translate(-50%,-50%);
-background:rgba(0,0,0,0.55);
-backdrop-filter: blur(6px);
+/* LEFT IMAGE SECTION */
+.left{
+flex:1;
+background-image:url('photo1.png');
+background-size:contain;
+background-position:center;
+background-repeat:no-repeat;
+background-color:black;
+}
+
+/* RIGHT CONTENT SECTION */
+.right{
+flex:1;
+display:flex;
+justify-content:center;
+align-items:center;
+background:rgba(0,0,0,0.85);
+padding:20px;
+}
+
+/* CONTENT BOX */
+.box{
+text-align:center;
+background:rgba(255,255,255,0.05);
 padding:30px;
 border-radius:20px;
 width:90%;
-max-width:500px;
+max-width:400px;
 }
 
 /* Buttons */
@@ -81,22 +88,31 @@ animation:floatUp 6s linear infinite;
 100%{transform:translateY(-10vh);opacity:0;}
 }
 
-/* Fireworks Canvas */
-canvas{
-position:fixed;
-top:0;
-left:0;
-z-index:-1;
+/* Mobile Layout */
+@media(max-width:768px){
+body{
+flex-direction:column;
+}
+.left{
+height:50vh;
+}
+.right{
+height:50vh;
+}
 }
 </style>
 </head>
 
 <body>
 
+<div class="left"></div>
+
+<div class="right">
+
 <!-- PASSWORD SCREEN -->
-<div id="passwordScreen" class="overlay">
+<div id="passwordScreen" class="box">
 <h2>Enter Secret Password 💌</h2>
-<input type="password" id="passwordInput" placeholder="Enter password" 
+<input type="password" id="passwordInput" placeholder="Enter password"
 style="padding:10px;border-radius:8px;border:none;margin-top:10px;width:80%;">
 <br>
 <button onclick="checkPassword()">Unlock ❤️</button>
@@ -104,9 +120,7 @@ style="padding:10px;border-radius:8px;border:none;margin-top:10px;width:80%;">
 </div>
 
 <!-- MAIN CONTENT -->
-<div id="mainContent" style="display:none;">
-
-<div class="overlay">
+<div id="mainContent" class="box" style="display:none;">
 <h1>NIHAR SANDHU ❤️</h1>
 <h2>Will you be my Valentine<br>and go on a date with me this Monday? 💖</h2>
 
@@ -114,13 +128,11 @@ style="padding:10px;border-radius:8px;border:none;margin-top:10px;width:80%;">
 
 <button id="yes" onclick="sayYes()">Yes 💕</button>
 <button id="no" onmouseover="moveButton()">No 🙈</button>
-</div>
 
 <audio id="bgMusic" src="music.mp3" loop></audio>
-
 </div>
 
-<canvas id="fireworks"></canvas>
+</div>
 
 <script>
 
@@ -141,14 +153,15 @@ document.getElementById("error").innerText="Wrong password 😢";
 /* MOVE NO BUTTON */
 function moveButton(){
 var button=document.getElementById("no");
-button.style.top=Math.random()*window.innerHeight+"px";
-button.style.left=Math.random()*window.innerWidth+"px";
+button.style.position="absolute";
+button.style.top=Math.random()*300+"px";
+button.style.left=Math.random()*200+"px";
 }
 
 /* COUNTDOWN */
 function startCountdown(){
 var target=new Date();
-target.setDate(target.getDate()+((1+7-target.getDay())%7)); 
+target.setDate(target.getDate()+((1+7-target.getDay())%7));
 target.setHours(0,0,0,0);
 
 setInterval(function(){
@@ -183,25 +196,10 @@ setTimeout(()=>heart.remove(),6000);
 },600);
 }
 
-/* FIREWORKS */
+/* YES CLICK */
 function sayYes(){
-startFireworks();
 document.body.innerHTML=
-"<h1 style='padding-top:200px;font-size:40px;background:black;height:100vh;'>Yayyy NIHAR MERI JAAN ❤️<br>Monday is ours ✨</h1>";
-}
-
-function startFireworks(){
-var canvas=document.getElementById("fireworks");
-var ctx=canvas.getContext("2d");
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
-
-for(let i=0;i<150;i++){
-ctx.fillStyle="hsl("+Math.random()*360+",100%,50%)";
-ctx.beginPath();
-ctx.arc(Math.random()*canvas.width,Math.random()*canvas.height,5,0,Math.PI*2);
-ctx.fill();
-}
+"<h1 style='display:flex;justify-content:center;align-items:center;height:100vh;background:black;font-size:40px;'>Yayyy NIHAR MERI JAAN ❤️<br>Monday is ours ✨</h1>";
 }
 
 </script>
